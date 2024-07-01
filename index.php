@@ -53,8 +53,8 @@ if ($username != "" && $password != "") {
         }
 
         // Check whether There is already a login for this user
-        $sqlque = "SELECT token FROM " . $sqltabl . "WHERE username=" .
-            $username;
+        $sqlque = "SELECT token FROM " . $sqltabl . " WHERE username='" .
+            $username . "';";
 
         // If it exists, update the information
         if ($sqlcon->query($sqlque) === TRUE) {
