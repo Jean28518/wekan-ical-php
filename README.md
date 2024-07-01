@@ -1,36 +1,77 @@
 # wekan-ical-php
 
-[![reuse compliant](https://reuse.software/badge/reuse-compliant.svg)](https://reuse.software/) [![Hosted on Codeberg](https://img.shields.io/badge/Codeberg-Main%20Repository-blue.svg)](https://codeberg.org/ViOffice/wekan-ical-php) [![Github Mirror](https://img.shields.io/badge/Github-Mirror-blue.svg)](https://github.com/ViOffice/wekan-ical-php) [![Latest Release](https://img.shields.io/badge/Latest-0.0.2-green.svg)](https://codeberg.org/ViOffice/wekan-ical-php/releases/tag/0.0.2)
-
 Calendar Synchronisation for Wekan. Supports single ical files or webcal sync.
+Original Repository: [ViOffice/wekan-ical-php](https://codeberg.org/ViOffice/wekan-ical-php)
 
-## Requirements:
+## ⚠️⚠️ WARNING: This Project is currently vunlarable to SQL-Injections ⚠️⚠️
 
-* PHP (>=7)
-    * `php-curl`
-    * [`php-qrcode`](https://github.com/chillerlan/php-qrcode)
-    * `php-mysql`
+## How to run in productions
 
-* Webserver with PHP support (e.g. Apache2)
+For ubuntu or debian based systems, you can use the following commands to install:
 
-* MySQL or MariaDB
-
-## Install required dependencies
-
-Ubuntu 20.04 Server (most likely also Debian 10):
-
-```
+```bash
+sudo -i
 # LAMP-stack
-apt install apache2 php libapache2-mod-php mariadb-server php
+apt install caddy mariadb-server php-fpm php
 
 # PHP modules
 apt install php-curl php-mysql
 
 # 3rdparty libraries
 apt install composer
+
+cd /var/www/
+git clone https://github.com/Jean28518/wekan-ical-php.git
+cd wekan-ical-php
+
 cd libs/
 chmod +x ./install_all.sh
 sudo -u www-data ./install_all.sh
+
+cd ..
+cp conf/common.php.sample conf/common.php
+vim conf/common.php 
+# Adjust domains, and database settings
+
+mysql
+CREATE DATABASE wekanical;
+USE wekanical;
+CREATE TABLE wekanical (
+    username CHAR(100),
+    token CHAR(100),
+    expire BIGINT,
+    ical BIGINT);
+CREATE USER wekanical@localhost IDENTIFIED BY 'your-secure-pw';
+GRANT ALL PRIVILEGES ON wekanical.* to wekanical@localhost;
+FLUSH PRIVILEGES;
+QUIT;
+
+vim /etc/caddy/Caddyfile 
+# Insert the following entry and adjust the domain
+wekanical.example.org {
+  root * /var/www/wekan-ical-php/
+  file_server
+
+  php_fastcgi unix//var/run/php/php-fpm.sock {
+  }
+
+  header {
+    Strict-Transport-Security max-age=31536000; # enable HSTS
+  }
+
+  #redir /.well-known/carddav /remote.php/dav 301
+  #redir /.well-known/caldav /remote.php/dav 301
+
+  @forbidden {
+    path /conf/*
+    path /README
+    path /libs/*
+  }
+
+  respond @forbidden 404
+}
+
+systemctl restart caddy
 ```
 
 ## Deployment
