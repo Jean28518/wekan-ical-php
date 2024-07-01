@@ -23,6 +23,12 @@ $username=$_POST["username"];
 $password=$_POST["password"];
 $error=$_GET['error'];
 
+// Get rid of sql-injections in username by replacing ' with '' and ; with '' and " with '' and \ with ''
+$username = str_replace("'", "''", $username);
+$username = str_replace(";", "", $username);
+$username = str_replace("\"", "", $username);
+$username = str_replace("\\", "", $username);
+
 // if username and password are provided, try to login.
 if ($username != "" && $password != "") {
 

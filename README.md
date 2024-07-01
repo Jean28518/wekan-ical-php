@@ -3,8 +3,6 @@
 Calendar Synchronisation for Wekan. Supports single ical files or webcal sync.
 Original Repository: [ViOffice/wekan-ical-php](https://codeberg.org/ViOffice/wekan-ical-php)
 
-## ⚠️ WARNING: This Project is currently vulnerable to SQL-Injections ⚠️
-
 ## How to run in production
 
 For ubuntu or debian based systems, you can use the following commands to install:
