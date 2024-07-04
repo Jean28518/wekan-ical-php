@@ -101,6 +101,15 @@ GRANT ALL PRIVILEGES ON name_of_db.* to name_of_user@localhost;
 FLUSH PRIVILEGES;
 ```
 
+## How to use and insert into nextcloud calendar
+
+- Go to the URL of your installation (wekanical.example.org)
+- Login with your Wekan credentials
+- Copy the link for subscribe to calendar
+- Go to your Nextcloud Calendar
+- Click on "new calendar" and choose "subscribe to calendar"
+- Insert the link (maybe you have to change the webcal:// to https:// or http://)
+
 ## Version-Upgrade
 
 If you are running wekan-ical-php straight from `main` branch:
