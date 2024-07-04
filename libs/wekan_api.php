@@ -12,6 +12,11 @@ function wekan_api_call($url, $path, $auth = NULL, $payload = NULL) {
     // set channel options
     curl_setopt($channel, CURLOPT_URL, $url . $path);
     curl_setopt($channel, CURLOPT_RETURNTRANSFER, true);
+
+    // Allow self-signed or unverified certificates
+    curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, false);
+
     if (!is_null($auth)) {
         curl_setopt($channel, CURLOPT_HTTPHEADER,
             array('Content-Type: application/json' , $auth ));
