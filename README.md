@@ -110,6 +110,12 @@ FLUSH PRIVILEGES;
 - Click on "new calendar" and choose "subscribe to calendar"
 - Insert the link (maybe you have to change the webcal:// to https:// or http://)
 
+### Hint: Set Refreshrate for subscribed calendars
+(https://www.php.net/manual/de/dateinterval.construct.php)
+```bash
+sudo -u www-data php /var/www/nextcloud/occ config:app:set dav calendarSubscriptionRefreshRate --value "P1H"
+```
+
 ## Version-Upgrade
 
 If you are running wekan-ical-php straight from `main` branch:
