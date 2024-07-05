@@ -40,6 +40,8 @@ function ical_create($domain, $userid, $caldata, $extraevents = NULL) {
         foreach ($card['checklist'] as $cl) {
             $tmp=$tmp . $cl['title'] . ":\\n" . implode("\\n", $cl['items']) . "\\n\\n";
         }
+        // Change all real line breaks to \n
+        $tmp=str_replace("\n", "\\n", $tmp);
         $tmp=$tmp . "\n";
         echo $tmp;
         echo "CLASS:PUBLIC\n";
